@@ -4,6 +4,8 @@
 #include <vector>
 #include <fstream>
 
+using namespace std;
+
 class TrieNode {
 public:
     char data;
@@ -160,7 +162,7 @@ std::string removeSpaces(const std::string& word) {
     return result;
 }
 
-vector<vector<string>> phoneDirectory(vector<string>&contactList, string &queryStr)
+vector<vector<string>> Directory(vector<string>&contactList, string &queryStr)
 {
     Trie* t = new Trie();
 
@@ -206,9 +208,44 @@ int main() {
 
     // Don't forget to delete the Trie object to avoid memory leaks
 
-    fstream file;
-    file.open("docs.txt", ios :: in);
-    delete t;
+    Trie* trie = new Trie();
+
+    // Read lines from file and build Trie
+    ifstream file("doc.odt");
+
+    if (!file.is_open()) {
+        cout << "Error while opening the file" << endl;
+        return 1;  // Exit the program if file opening fails
+    }
+
+    string line;
+    while (getline(file, line)) {
+        // Insert each line into the Trie
+        trie->insertWord(removeSpaces(line));
+    }
+
+    file.close();  // Close the file after reading
+
+    // Now you can use trie->getSuggestions() or other Trie methods as needed
+
+    // Clean up memory
+    
+
+
+   vector<vector<string>> suggestions = trie->getSuggestions("vansh wagh");
+
+    // Print the suggestions
+    for (const auto& suggestion : suggestions) {
+        for (const auto& word : suggestion) {
+            cout << word << " ";
+        }
+        break;
+        cout << endl;
+    }
+    cout<<endl;
+    delete trie;
+
+
 
     return 0;
 }
